@@ -1,0 +1,17 @@
+{
+  "name": "FutbolFriends Manager",
+  "short_name": "FutbolFriends",
+  "description": "Gestiona tus partidos de futbol amateur, arma equipos parejos y analiza estadisticas",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f1a",
+  "theme_color": "#00ff88",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
