@@ -1,5 +1,5 @@
 export interface Player {
-  id?: string;
+  id: string; // Ya no es opcional, Supabase siempre nos da un ID
   name: string;
   role: string;
   age: number;
@@ -41,8 +41,28 @@ export interface Player {
 
 export interface Match {
   id?: string;
-  date: string;
-  team_a_score: number;
-  team_b_score: number;
-  winner: "A" | "B" | "Empate";
+  fecha: string;
+  equipo_ganador: "A" | "B" | "Empate";
+  diferencia_goles: number;
+  team_a_ids: string[];
+  team_b_ids: string[];
+}
+
+// Helper para calcular promedio general (usado en tu TeamBuilder)
+export function getPlayerAverage(p: Player): number {
+  if (p.role === "Arquero") {
+    // Promedio simple de stats de arquero
+    const stats = [p.gk_hands, p.gk_feet, p.gk_positioning, p.gk_reflexes].filter(n => n !== undefined) as number[];
+    if (stats.length === 0) return 5;
+    return stats.reduce((a, b) => a + b, 0) / stats.length;
+  }
+  
+  // Promedio para jugadores de campo (Técnica + Físico + Táctica + Mental)
+  // Ajusta estos campos según lo que quieras ponderar más
+  const stats = [
+    p.tech_control, p.tech_short_pass, p.tech_shooting, p.tech_tackle,
+    p.phys_speed, p.phys_stamina, p.phys_power,
+    p.tact_defense, p.tact_attack, p.ment_teamwork
+  ];
+  return stats.reduce((a, b) => a + b, 0) / stats.length;
 }
