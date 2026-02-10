@@ -1,7 +1,7 @@
 import { supabase } from './supabase';
-import { Player, Match } from './data'; // Asegúrate que este nombre coincida con tu archivo de definiciones
+import { Player, Match } from './data';
 
-// Obtener todos los jugadores desde Supabase
+// --- JUGADORES ---
 export async function getPlayers(): Promise<Player[]> {
   const { data, error } = await supabase
     .from('players')
@@ -15,7 +15,20 @@ export async function getPlayers(): Promise<Player[]> {
   return data || [];
 }
 
-// Guardar un nuevo partido en Supabase
+// --- PARTIDOS ---
+export async function getMatches(): Promise<Match[]> {
+  const { data, error } = await supabase
+    .from('matches')
+    .select('*')
+    .order('fecha', { ascending: false }); // Los más nuevos primero
+
+  if (error) {
+    console.error('Error cargando historial:', error);
+    return [];
+  }
+  return data || [];
+}
+
 export async function saveMatch(match: Match) {
   const { error } = await supabase
     .from('matches')
@@ -23,8 +36,6 @@ export async function saveMatch(match: Match) {
 
   if (error) {
     console.error('Error guardando partido:', error);
-    alert('Hubo un error al guardar el partido');
-  } else {
-    alert('Partido guardado exitosamente');
+    throw error;
   }
 }
